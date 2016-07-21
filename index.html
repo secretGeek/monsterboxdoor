@@ -1,0 +1,1716 @@
+<html>
+<head>
+    <title>Monster Box Door</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+	  <link rel="apple-touch-icon" href="images/template/engage.png"/>
+    <script src='jquery.js' type='text/javascript'></script>
+    <script src='hotkeys.js' type='text/javascript'></script>
+    <script src='agnes.js' type='text/javascript'></script>
+    <script src='jquery-ui-1.8.20.custom.min.js' type='text/javascript'></script>
+	
+
+    <style>
+	    .debug
+        {
+            display: none; /*inherit */
+        }
+
+		body { font-family:tahoma, verdana, "sans-serif";color:#222;}
+		h1 { color:#444;}
+        .spacer
+        {
+            visibility: hidden;
+        }
+        span.pane
+        {
+            float: left;
+            padding: 10px;
+            margin: 20px;
+            border: 1px solid #ccc;
+            text-align: center;
+            min-width: 90px;
+            min-height: 48px;
+            max-width: 90px;
+        }
+        
+        #levelUp span.pane
+        {
+            max-width: 90px;
+        }
+        
+        div.row, #dead
+        {
+            clear: left;
+            width: 458px;
+            border: 1px solid #ccc;
+        }
+        
+        .hid
+        {
+            display: none;
+        }
+        
+        .debug1, .debug2, .debug3
+        {
+            float: right;
+            padding: 15px;
+            margin-left: 15px;
+            border: 1px solid #D8D8D8;
+        }
+        
+        #debug4
+        {
+            clear: left;
+        }
+        
+        #dead
+        {
+            padding: 20px;
+            margin-top: 20px;
+            width: 400px;
+        }
+        
+        .dead
+        {
+            color: #D44;
+            font-size: 1.4em;
+        }
+		
+		.board {
+		   min-height: 110px;
+		}
+    </style>
+</head>
+<body>
+    <input type='button' class='debug3 debug' value='debug'></input>
+    <span class='debug2 debug'></span><span class='debug1 debug'></span>
+    <div class='nothid' id='mainMenu'>
+        <div class='actions row'>
+            <h1>
+                <center>Monster Box Door</center>
+            </h1>
+        </div>
+        <div class='actions row'>
+            <center>Main Menu</center>
+        </div>
+        <div class='actions row'>
+            <span class='pane'>new game<br />
+                <input type='button' value='play' class='play' />
+            </span><span class='pane'>new game<br />
+                <input type='button' value='play' class='play' />
+            </span><span class='pane'>new game<br />
+                <input type='button' value='play' class='play' />
+            </span>
+        </div>
+        <div class='actions row'>
+			<span class='pane'>
+                &nbsp;
+            </span>
+            <span class='pane'>
+                <input type='button' value='high scores' class='scores' />
+            </span>
+			<span class='pane'>
+                &nbsp;
+            </span>
+            
+        </div>
+    </div>
+    <div class='hid' id='paused'>
+		<div class='actions row'>
+			<h1>
+                <center>Monster Box Door</center>
+			</h1>
+        </div>
+        <div class='actions row'>
+            <center><blink>Paused</blink></center>
+        </div>
+        
+	
+        <div class='actions row'>
+            <span class='inventory pane'>
+                <input type='button' value='inventory' class='inventory' />
+            </span><span class='store pane'>
+                <input type='button' value='store' class='store' />
+            </span><span class='quit pane'>
+                <input type='button' value='QUIT' class='quit' />
+            </span>
+        </div>
+        <div class='actions row'>
+		<span class='pane'>
+                &nbsp;
+            </span>
+            
+            <span class='pane'>
+                <input type='button' value='back' class='back'></input>
+            </span>
+			<span class='pane'>
+                <input type='button' value='RESPAWN' class='respawn'></input>
+            </span>
+            
+        </div>
+    </div>
+    <div class='hid' id='inventory'>
+	        <div class='stats row'>
+            <span class='health pane'>health<br />
+            </span>
+			
+			<span class='princesses pane'><span>0 princesses</span>
+                <br />
+            </span>
+			<span class='mana pane'>mana<br />
+            </span>
+        </div>
+
+        <div class='actions row'>
+            <span class='healthPotions pane'><span>0 health potions</span><br />
+                <input type='button' value='drink' class='drink' />
+            </span><span class='manaPotions pane'><span>0 mana potions</span>
+                <br />
+                <input type='button' value='drink' class='drink' />
+            </span><span class='keys pane'><span>0 keys</span>
+                <br />
+            </span>
+        </div>
+        <div class='actions row'>
+            <span class='goldInventory pane'><span>956 gold</span><br />
+            </span><span class='pane'>
+                <input type='button' value='back' class='back'></input>
+            </span></span>
+			<span class='store pane'>
+                <input type='button' value='store' class='store'></input>
+            </span>
+			
+			
+        </div>
+    </div>
+    <div class='hid' id='store'>
+		        <div class='stats row'>
+            <span class='health pane'>health<br />
+            </span>
+<span class='xp pane'>xp<br />
+            </span>
+			<span class='mana pane'>mana<br />
+            </span>
+        </div>
+
+        <div class='actions row'>
+            <span class='healthPotions pane'><span>195 gold</span><br />
+                health potion<br />
+                <input type='button' value='buy' class='buy' />
+            </span><span class='manaPotions pane'><span>145 gold</span><br />
+                mana potion
+                <br />
+                <input type='button' value='buy' class='buy' />
+            </span>
+        </div>
+        <div class='actions row'>
+            <span class='goldInventory pane'><span>956 gold</span><br />
+            </span>
+			<span class='pane'>
+                <input type='button' value='back' class='back'></input>
+            </span>
+			<span class='pane'>
+                <input type='button' value='inventory' class='inventory'></input>
+            </span>
+        </div>
+    </div>
+    <div class='hid' id='levelUp'>
+        <div class='actions row'>
+            <h1>
+                <center>Level Up!</center>
+            </h1>
+            <center><p>Choose a prize.</p></center>
+        </div>
+        <div class='actions row'>
+            <span class='levelUpChoice1 pane'><span></span>
+                <input type='button' value='ok' class='levelUp1' />
+            </span><span class='levelUpChoice2 pane'><span></span>
+                <input type='button' value='ok' class='levelUp2' />
+            </span><span class='levelUpChoice3 pane'><span></span>
+                <input type='button' value='ok' class='levelUp3' />
+            </span>
+        </div>
+    </div>
+    <div class='hid' id='dead'>
+        <p class='dead'>
+            You are dead.</p>
+        <span></span>
+        <p>
+            You can continue at the first room on this floor.</p>
+        <p>
+            You get to keep all your gold.</p>
+        <p>
+            <input type='button' value='continue' class='continue'></input></p>
+        <p>
+            You can go back to the main menu.</p>
+        <p>
+            <input type='button' value='main menu' class='mainMenu'></input></p>
+    </div>
+    <div class='hid' id='scoreBoard'>
+		<div class='actions row'>
+			<h1>
+                <center>Monster Box Door</center>
+			</h1>
+        </div>
+        <div class='actions row'>
+            <center>High Scores</center>
+        </div>
+        <div class='actions row board'>
+        </div>
+		
+        <div class='actions row'>
+		<span class='pane'>
+                &nbsp;
+            </span>
+            
+            <span class='pane'>
+                <input type='button' value='back' class='back'></input>
+            </span>
+			<span class='pane'>
+                &nbsp;
+            </span>
+            
+        </div>
+
+		
+		
+		
+    </div>
+    <div class='hid' id='game'>
+        <div class='stats row'>
+            <span class='health pane'>health<br />
+            </span><span class='xp pane'>xp<br />
+            </span><span class='mana pane'>mana<br />
+            </span>
+        </div>
+        <br />
+        <div class='actions row room'>
+            <center id='roomPlaque'>Floor 3, Room A</center>
+        </div>
+        <div class='actions row room'>
+            <span class='monster pane'><span>monster</span><br />
+                <input type='button' value='hit' class='hit' />
+                <input type='button' value='grab' class='grab hid' />
+            </span>
+			
+			<span class='box pane'><span>box</span>
+                <br />
+                <input type='button' value='open' class='open' />
+                <input type='button' value='grab' class='grab hid' />
+            </span>
+			
+			<span class='door pane'><span>door</span><br />
+                <input type='button' value='open' class='open' />
+                <input type='button' value='leave' class='leave hid' />
+            </span>
+			
+			
+			
+        </div>
+        <div class='actions row hallway hid'>
+            <span class='box pane spacer'></span><span class='hallway pane'><span>hallway</span><br />
+                <input type='button' value='walk' class='walk' />
+            </span><span class='monster pane spacer'></span>
+        </div>
+        <div class='actions row staircase hid'>
+            <span class='box pane spacer'></span><span class='monster pane spacer'></span><span
+                class='staircase pane'><span>staircase</span><br />
+                <input type='button' value='go up' class='ascend' />
+            </span>
+        </div>
+        <br />
+        <div class='stats row'>
+            <span class='gold pane'>gold<br />
+            </span><span class='pause pane'>
+                <input type='button' value='pause' class='pause' />
+            </span><span class='level pane'>level<br />
+            </span>
+        </div>
+        <div class='message row'>
+        </div>
+    </div>
+    <textarea id='debug4' class='debug'> </textarea>
+    <!-- game -->
+</body>
+<script type='text/javascript'>
+
+	window.addEventListener("load", function() { setTimeout(loaded, 100) }, false);
+	
+	function loaded() {
+		//document.getElementById("page_wrapper").style.visibility = "visible";
+		window.scrollTo(0, 1); // pan to the bottom, hides the location bar
+	}
+
+
+    var player, room, rooms, savedGame, defaultGame, monsterClasses, hidden_back, shown_forward, scores, maxXp, levelUpChoices, levelUpPossibilities, messages, keyMade, lockMade, hallway, staircase, keyPressed;
+	keyPressed = false;
+    savedGame = {};
+
+    hallway = false;
+    staircase = false;
+    keyMade = false;
+    lockMade = false;
+    messages = [''];
+    monsterClasses = ['orc', 'dwarf', 'witch', 'imp', 'goblin', 'skeleton', 'elf', 'wizard', 'zombie', 'cyclops', 'demon'];
+    levelUpChoices = ['more firepower', 'more damage', '100 gold']; //the choices the user is presented with
+    levelUpPossibilities = ['more firepower',
+'more damage',
+'max mana up',
+'max health up',
+'100 gold',
+'more luck',
+'more shield',
+'faster mana recovery',
+'faster health recovery']; //the possible choices (they are only given 3 at a time.)
+    
+	//GAMEPLAY
+    maxXp = 8; //12; //this is the point at which you level up!
+    player = {};
+    player.health = 50;
+    player.mana = 50;
+    player.xp = 0;
+    player.kills = 0;
+    player.level = 0;
+    player.gold = 50;
+    player.shield = 1;
+    player.recoverySpeed = 1;
+    player.reloadSpeed = 1;
+    player.firePower = 5;
+    player.maxHealth = 50;
+    player.maxMana = 50;
+    player.damageForce = 1;
+    player.luck = 4;
+    player.dead = false;
+    player.holding = {};
+    player.holding.keys = 0;
+	player.healthPotionsDrunk = 0;
+    player.manaPotionsDrunk = 0;
+	player.deaths = 0;
+	player.healthPotionsBought = 0;
+	player.manaPotionsBought = 0;
+    //floor = {};
+    //floor.number = 1;
+    //floor.rooms = [];
+
+    room = {};
+    room.floor = 1;
+    room.number = 1;
+    room.monster = {};
+    room.monster.class = monsterClasses[room.number - 1];
+    room.monster.health = 5;
+    room.monster.maxHealth = room.monster.health;
+    room.monster.firePower = 2;
+    room.monster.dead = false;
+    room.monster.content = {};
+
+    room.monster.content.amount = 30;
+    room.monster.content.name = 'gold';
+    room.box = {};
+    room.box.locked = false;
+    room.box.content = {};
+    room.box.content.amount = 20;
+    room.box.content.name = 'gold';
+    room.door = {};
+    room.door.locked = false;
+    room.door.content = {};
+    room.door.content.name = 'open door';
+    rooms = [];
+    rooms[0] = room;
+
+    scores = [];
+
+    $(document).ready(function () {
+        beCool();
+    });
+
+    function beCool(here) {
+        here = here || document;
+        here = $(here);
+
+        here.find('.box input.open').click(function (item) {
+            openBox();
+        });
+
+        $(document).bind('keydown', 'm', function () {
+            goMonster();
+        });
+
+        $(document).bind('keydown', 'b', function () {
+            goBox();
+        });
+
+        $(document).bind('keydown', 'd', function () { //ctrl+a
+            goDoor();
+        });
+
+        $(document).bind('keydown', '1', function () {
+            shortcut('1');
+        });
+        $(document).bind('keydown', '2', function () {
+            shortcut('2');
+        });
+        $(document).bind('keydown', '3', function () {
+            shortcut('3');
+        });
+        $(document).bind('keydown', '4', function () {
+            shortcut('4');
+        });
+		$(document).bind('keydown', '5', function () {
+            shortcut('5');
+        });
+
+		
+        here.find('.door input.open').click(function (item) {
+            openDoor();
+        });
+
+        here.find('.door input.leave').click(function (item) {
+            lookForDoorsAndStairs();
+            nextRoom();
+        });
+
+        here.find('.monster input.hit').click(function (item) {
+            hitMonster();
+        });
+
+        here.find('.box input.grab').click(function (item) {
+            grabBoxContent();
+        });
+
+        here.find('.monster input.grab').click(function (item) {
+            grabMonsterContent();
+        });
+
+        here.find('.pause input.pause').click(function (item) {
+            pauseGame();
+        });
+
+        here.find('input.mainMenu').click(function (item) {
+            mainMenu();
+        });
+
+        here.find('input.continue').click(function (item) {
+            continueGame(true);
+        });
+
+        here.find('input.play').click(function (item) {
+            play();
+        });
+
+        here.find('input.scores').click(function (item) {
+            showScores();
+        });
+
+        here.find('input.back').click(function (item) {
+            back();
+        });
+
+        here.find('input.quit').click(function (item) {
+            quit();
+        });
+
+		here.find('input.respawn').click(function (item) {
+			$('#paused').hide();
+            continueGame(true);
+        });
+
+        here.find('input.inventory').click(function (item) {
+		    if ($('#store').is(':visible')) {
+				inventory('#store');
+            } else inventory();
+        });
+
+        here.find('input.store').click(function (item) {
+			if ($('#inventory').is(':visible')) {
+				store('#inventory');
+            } else store();
+        });
+
+        here.find('input.levelUp1').click(function (item) {
+            levelUpChoice(1);
+        });
+
+        here.find('input.levelUp2').click(function (item) {
+            levelUpChoice(2);
+        });
+
+        here.find('input.levelUp3').click(function (item) {
+            levelUpChoice(3);
+        });
+
+        here.find('.healthPotions input.drink').click(function (item) {
+            drinkHealthPotion();
+        });
+
+        here.find('.manaPotions input.drink').click(function (item) {
+            drinkManaPotion();
+        });
+
+        here.find('.healthPotions input.buy').click(function (item) {
+            buyHealthPotion();
+        });
+
+        here.find('.manaPotions input.buy').click(function (item) {
+            buyManaPotion();
+        });
+
+        here.find('.debug3').click(function (item) {
+            showStats();
+        });
+
+        here.find('.hallway input.walk').click(function (item) {
+            walkHall();
+        });
+
+        here.find('.staircase input.ascend').click(function (item) {
+            ascendStairs();
+        });
+
+        //saveGame();	
+        defaultGame = cloneGame(player, room);
+    }
+
+    function shortcut(key) {
+	
+	
+		if (key == '5' &&  $('#store').is(':visible')) {
+			keyPressed = true;
+            inventory('#store');
+			return;
+		}		
+	
+		if (key == '5' &&  $('.respawn').is(':visible')) {
+			keyPressed = true;
+			$('#paused').hide();
+            continueGame();
+			return;
+		}		
+	
+		if (key == '5' &&  $('#inventory').is(':visible')) {
+			keyPressed = true;
+            store('#inventory');
+			return;
+		}		
+	
+        //here.find('input.levelUp1').click(function (item) {
+        if (key == '1' || key == '2' || key == '3' || key == '4') {
+			keyPressed = true;
+            if ($('input.play').is(':visible')) {
+				if (key == '4') {
+					showScores();
+				} else {
+					play();
+				}
+            } else if (key == '1' && $('#store input.buy').is(':visible')) {
+                buyHealthPotion();
+            } else if (key == '2' && $('#store input.buy').is(':visible')) {
+                buyManaPotion();
+            } else if (key == '1' && $('input.continue').is(':visible')) {
+                continueGame(true);
+            } else if (key == '2' && $('input.continue').is(':visible')) {
+                mainMenu();
+            } else if (key == '1' && $('#inventory .healthPotions').is(':visible')) {
+                drinkHealthPotion();
+            } else if (key == '2' && $('#inventory .manaPotions').is(':visible')) {
+                drinkManaPotion();
+            } else if (key == '1' && $('input.inventory').is(':visible')) {
+                inventory();
+            } else if (key == '2' && $('input.store').is(':visible')) {
+                store();
+            } else if (key == '3' && $('input.quit').is(':visible')) {
+                quit();
+            } else if (key == '4' && $('input.back').is(':visible')) {
+                back();
+            } else if (key == '3' && $('.staircase').is(":visible")) {
+                ascendStairs();
+            } else if (key == '2' && $('.hallway').is(":visible")) {
+                walkHall();
+            } else if ($('input.levelUp1').is(":visible")) {
+                switch (key) {
+                    case '1':
+                        levelUpChoice(1);
+                        break;
+                    case '2':
+                        levelUpChoice(2);
+                        break;
+                    case '3':
+                        levelUpChoice(3);
+                        break;
+                }
+            } else if ($('.monster').is(":visible")) {
+                switch (key) {
+                    case '1':
+                        goMonster();
+                        break;
+                    case '2':
+                        goBox();
+                        break;
+                    case '3':
+                        goDoor();
+                        break;
+                    case '4':
+                        pauseGame();
+                        break;
+
+                }
+            }
+        }
+
+    }
+
+    function goMonster() {
+        // monster 
+        if ($('.monster input.hit').is(":visible")) {
+            hitMonster();
+        } else if ($('.monster input.grab').is(":visible")) {
+            grabMonsterContent();
+        }
+    }
+
+    function goBox() {
+        // box .box > input.open
+        if ($('.box input.open').is(":visible")) {
+            openBox();
+        } else if ($('.box input.grab').is(":visible")) {
+            grabBoxContent();
+        }
+    }
+
+    function goDoor() {
+        // door .door > input.open
+        if ($('.door input.open').is(":visible")) {
+
+            openDoor();
+        } else if ($('.door input.leave').is(":visible")) {
+            lookForDoorsAndStairs();
+            nextRoom();
+        }
+
+    }
+
+    function lookForDoorsAndStairs() {
+        //if it's time to show a staircase, set staircase = true;
+        //if it's time to show a hallway, set hallway = true;
+        if (room.number == maxRoom(room.floor)) {
+            if (room.floor % 2 == 1) {
+                staircase = true;
+            } else {
+                hallway = true;
+            }
+        }
+    }
+
+    function walkHall() {
+        say("You walk on down the hall.");
+        nextRoom();
+    }
+
+    function ascendStairs() {
+        say("You walk up the stairs.");
+        nextRoom();
+    }
+
+    function unlockDoor() {
+        var door = room.door;
+        if (door.locked == false) {
+            openDoor();
+            return;
+        }
+
+        var door = room.door;
+        if (door.locked == false) {
+            showContent(door, '.door');
+            say("You open the door.");
+            $('.door input.leave').show();
+        }
+
+        tick();
+        updateScreen();
+    }
+
+    function showStats() {
+        $('#debug4').val(agnes.jsonToCsv(stats));
+    }
+
+    function drinkManaPotion() {
+        if (player.holding.manaPotions && player.holding.manaPotions > 0) {
+            player.mana = player.maxMana;
+            player.holding.manaPotions -= 1;
+			player.manaPotionsDrunk += 1;
+        }
+		$('.mana').animate({ backgroundColor: '#44EE44' }, 10);
+        $('.mana').animate({ backgroundColor: '#FFFFFF' }, 500);
+        
+        updateInventory();
+        updateScreen();
+    }
+
+    function buyManaPotion() {
+        if (player.gold < 145) {
+            say("You can't afford it.");
+            $('.goldInventory').animate({ backgroundColor: '#FF0000' }, 10);
+            $('.goldInventory').animate({ backgroundColor: '#FFFFFF' }, 500);
+
+            return;
+        }
+
+        player.gold -= 145;
+		player.manaPotionsBought += 1;
+        $('.goldInventory').animate({ backgroundColor: '#D4A017' }, 10);
+        $('.goldInventory').animate({ backgroundColor: '#FFFFFF' }, 500);
+        say("Bought a mana potion.");
+
+        if (player.holding.manaPotions) {
+            player.holding.manaPotions += 1;
+        } else {
+            player.holding.manaPotions = 1;
+        }
+
+        updateStore();
+        updateScreen();
+    }
+
+    function buyHealthPotion() {
+        if (player.gold < 195) {
+            say("You can't afford it.");
+            $('.goldInventory').animate({ backgroundColor: '#FF0000' }, 10);
+            $('.goldInventory').animate({ backgroundColor: '#FFFFFF' }, 500);
+
+            return;
+        }
+
+        player.gold -= 195;
+		player.healthPotionsBought += 1;
+        $('.goldInventory').animate({ backgroundColor: '#D4A017' }, 10);
+        $('.goldInventory').animate({ backgroundColor: '#FFFFFF' }, 500);
+        say("Bought a health potion.");
+
+        if (player.holding.healthPotions) {
+            player.holding.healthPotions += 1;
+        } else {
+            player.holding.healthPotions = 1;
+        }
+        updateStore();
+        updateScreen();
+    }
+	
+    function drinkHealthPotion() {
+        if (player.holding.healthPotions && player.holding.healthPotions > 0) {
+            player.health = player.maxHealth;
+            player.holding.healthPotions -= 1;
+			player.healthPotionsDrunk += 1;
+        }
+		$('.health').animate({ backgroundColor: '#44EE44' }, 10);
+        $('.health').animate({ backgroundColor: '#FFFFFF' }, 500);
+                
+        updateInventory();
+        updateScreen();
+    }
+
+    function s(number) {
+        if (number != 1) return 's';
+        return '';
+    }
+
+    function es(number) {
+        if (number != 1) return 'es';
+        return '';
+    }
+
+    function updateInventory() {
+        if (player.holding.healthPotions) {
+            $('#inventory .healthPotions > span ').html('' + player.holding.healthPotions + ' health potion' + s(player.holding.healthPotions));
+        } else {
+            $('#inventory .healthPotions > span ').html('0 health potions');
+        }
+
+        if (player.holding.manaPotions) {
+            $('#inventory .manaPotions > span ').html('' + player.holding.manaPotions + ' mana potion' + s(player.holding.manaPotions));
+        } else {
+            $('#inventory .manaPotions > span ').html('0 mana potions');
+        }
+
+        if (player.holding.keys) {
+            $('#inventory .keys > span ').html('' + player.holding.keys + ' key' + s(player.holding.keys));
+        } else {
+            $('#inventory .keys > span ').html('0 keys');
+        }
+
+        if (player.holding.princesses) {
+            $('#inventory .princesses > span ').html('' + player.holding.princesses + ' princess' + es(player.holding.princesses));
+        } else {
+            $('#inventory .princesses > span ').html('0 princesses');
+        }
+
+        $('#inventory .goldInventory > span ').html(player.gold + ' gold');
+    }
+
+    function inventory(toHide) {
+		toHide = toHide || '#paused';
+        updateInventory();
+        $('#inventory').show();
+        $(toHide).hide();
+        shown_forward = '#inventory';
+    }
+
+    function store(toHide) {
+	    toHide = toHide || '#paused';
+        updateStore();
+        $('#store').show();
+        $(toHide).hide();
+        shown_forward = '#store';
+    }
+
+    function updateStore() {
+        $('#store .goldInventory > span ').html(player.gold + ' gold');
+    }
+
+    function levelUpChoice(n) {
+        //grab the choice that was made
+
+        //levelUpChoices = ['more firepower', 'more damage', '100 gold'];
+        var chosen = levelUpChoices[n - 1];
+
+        //apply the chosen level up
+        switch (chosen) {
+            case 'more firepower':
+                player.firePower = player.firePower + 1;
+                break;
+
+            case 'more damage':
+                player.damageForce = player.damageForce + 1;
+                break;
+
+            case 'max mana up':
+                player.maxMana = Math.floor(player.maxMana * 1.4);
+                break;
+
+            case 'max health up':
+                player.maxHealth = Math.floor(player.maxHealth * 1.4);
+                break;
+
+            case '100 gold':
+                player.gold = player.gold + 100;
+                break;
+
+            case 'more luck':
+                player.luck = player.luck + 4;
+                break;
+
+            case 'faster mana recovery':
+                player.reloadSpeed += 1;
+                break;
+
+            case 'faster health recovery':
+                player.recoverySpeed += 1;
+                break;
+
+            case 'more shield':
+                player.shield += 0.25;
+                break;
+        }
+
+        back();
+        updateScreen();
+    }
+
+    function quit() {
+        $('#paused').hide();
+        $('#mainMenu').show();
+    }
+    function back() {
+        if (hidden_back != null) $(hidden_back).show();
+        if (shown_forward != null) $(shown_forward).hide();
+    }
+
+    function showScores() {
+        $('#mainMenu').hide();
+		var scoresText, i, n;
+		scoresText = '<div>';
+		n = scores.length;
+		//jalert(scores);
+
+		scores = scores.sort(function(a,b){
+              if(a.kills > b.kills)
+                   return -1 
+              else if(a.kills < b.kills)
+                   return 1
+              else return 0;
+            });   
+
+		for(i = 0; i < n; i++) {
+			//jalert(scores[i]);
+        
+			scoresText += "<span>" + (i+1) + ". Monsters: " + scores[i].kills + ", Level: " + scores[i].level + ", Floor: " + scores[i].floor + "</span><br />";
+		}
+		scoresText += '</div>';
+		$('#scoreBoard').show();
+        $('#scoreBoard > .board').html(scoresText); //'<pre>' + JSON.stringify(scores, null, '  ') + '</pre>');
+		hidden_back = '#mainMenu';
+        shown_forward = '#scoreBoard';
+    }
+
+    function play() {
+        savedGame = cloneGame(defaultGame.player, defaultGame.room);
+        player.gold = defaultGame.player.gold;
+        player.deaths = defaultGame.player.deaths;
+        continueGame(false);
+        //updateScreen();
+    }
+
+    function mainMenu() {
+        $('#dead').hide();
+        $('#mainMenu').show();
+    }
+
+
+    function saveGame() {
+        savedGame = cloneGame(player, room);
+    }
+
+    function cloneGame(player2, room2) {
+        var result = {};
+        //var newObject = jQuery.extend(true, {}, oldObject);
+        result.player = jQuery.extend(true, {}, player2);
+        result.room = jQuery.extend(true, {}, room2);
+
+        return result
+    }
+
+    function continueGame(rebuildRoom) {
+        $('#game').show();
+        $('#dead').hide();
+        $('#mainMenu').hide();
+
+        var gold, deaths;
+		gold = player.gold;
+		deaths = player.deaths;
+		
+		//Re-load player from previous save-state. (i.e. entry to current floor)
+        player = savedGame.player;
+
+		player.deaths = deaths;
+        //save gold across games. (provided it doesn't take you backwards)
+        if (gold > player.gold) {
+            player.gold = gold;
+        }
+		
+        room = savedGame.room;
+		if (rebuildRoom == true) {
+			room = makeRoom(room.floor, room.number);
+		}
+        messages = [''];
+        //create fresh continuation point.
+        saveGame();
+
+        showRoom();
+        updateScreen();
+    }
+
+    function showRoom() {
+        $('.door input.open').show();
+        $('.door input.leave').hide();
+
+        $('.monster input.hit').show();
+        $('.monster input.grab').hide();
+
+        $('.box input.open').show();
+        $('.box input.grab').hide();
+
+        if (room.box) {
+            //if there's something about the box... show it.
+            if (room.box.locked == true) {
+                $('.box span').html('locked box');
+            } else {
+                $('.box span').html('box');
+            }
+        }
+
+        if (room.door) {
+            //if there's something about the door show it.
+            $('.door input.open').show();
+            $('.door input.leave').hide();
+
+            if (room.door.locked == true) {
+                $('.door span').html('locked door');
+            } else {
+                $('.door span').html('door');
+            }
+        }
+
+        if (room.monster) {
+            $('.monster span').html(room.monster.class);
+        }
+    }
+
+    function grabBoxContent() {
+        grabContent(room.box, '.box');
+        $('.box span').html('box');
+    }
+
+    function grabMonsterContent() {
+        grabContent(room.monster, '.monster');
+        $('.monster span').html('nothing');
+        $('.monster input.hit').show();
+    }
+
+    function grabContent(box, X) {
+
+        $(X).find('input').hide();
+
+        if (box.content) {
+            if (box.content.name && box.content.name == 'gold') {
+                say("You grab the gold quickly.");
+                player.gold = player.gold + box.content.amount;
+                $('.gold').animate({ backgroundColor: '#D4A017' }, 10);
+                $('.gold').animate({ backgroundColor: '#FFFFFF' }, 500);
+                /*$('.gold').animate({backgroundColor: '#D4A017'}, 'fast');
+                $('.gold').animate({backgroundColor: '#FFFFFF'}, 'fast');*/
+
+            } else if (box.content.name && box.content.name == 'bread') {
+                say("You eat the bread.");
+                player.health = player.health + 10; //
+                $('.health').animate({ backgroundColor: '#44EE44' }, 10);
+                $('.health').animate({ backgroundColor: '#FFFFFF' }, 200);
+                if (player.health > player.maxHealth) {
+                    player.health = player.maxHealth;
+                }
+            } else if (box.content.name && box.content.name == 'cake') {
+                say("You devour the cake.");
+                player.health = player.health + 5; //
+                $('.health').animate({ backgroundColor: '#44EE44' }, 10);
+                $('.health').animate({ backgroundColor: '#FFFFFF' }, 200);
+                if (player.health > player.maxHealth) {
+                    player.health = player.maxHealth;
+                }
+            } else if (box.content.name && box.content.name == 'biscuit') {
+                say("The biscuit is gone in one bite.");
+                player.health = player.health + 2; //
+				$('.health').animate({ backgroundColor: '#44EE44' }, 10);
+                $('.health').animate({ backgroundColor: '#FFFFFF' }, 200);
+                if (player.health > player.maxHealth) {
+                    player.health = player.maxHealth;
+                }
+            } else if (box.content.name && box.content.name == 'a princess!') {
+                say("You rescue the princess.");
+                if (!player.holding.princesses) {
+                    player.holding.princesses = 1;
+                } else {
+                    player.holding.princesses += 1;
+                }
+            } else if (box.content.name && box.content.name == 'mana potion') {
+                say("You keep the mana potion.");
+
+                if (!player.holding.manaPotions) {
+                    player.holding.manaPotions = 1;
+                } else {
+                    player.holding.manaPotions += 1;
+                }
+            } else if (box.content.name && box.content.name == 'health potion') {
+                say("You take the health potion.");
+
+                if (!player.holding.healthPotions) {
+                    player.holding.healthPotions = 1;
+                } else {
+                    player.holding.healthPotions += 1;
+                }
+            } else if (box.content.name && box.content.name == 'brass key') {
+                say("You take the key.");
+
+                if (!player.holding.keys) {
+                    player.holding.keys = 1;
+                } else {
+                    player.holding.keys += 1;
+                }
+            }
+        }
+
+        box.content = null;
+        $(X).find('span').html('');
+
+        $(X).find('input.open').show();
+
+        tick();
+        updateScreen();
+    }
+
+    function openBox() {
+
+        //if something in the box, show it.
+        //(so it can be collected)
+        var box = room.box;
+        if (box.locked == false) {
+            showContent(box, '.box');
+            say("You open the box.");
+        }
+
+        tick();
+        updateScreen();
+    }
+
+    function jalert(o) {
+        alert(JSON.stringify(o));
+    }
+
+    function showContent(box, X) {
+        $(X).find('input').hide();
+
+        $(X).find('input.grab').val('grab');
+
+        if (box.content) {
+            var c = '';
+            if (box.content.amount) {
+                c = c + box.content.amount + ' ';
+            }
+
+            if (box.content.name) {
+                c = c + box.content.name + ' ';
+                if (box.content.name == 'bread' || box.content.name == 'biscuit' || box.content.name == 'cake') {
+                    $(X).find('input.grab').val('eat');
+                }
+                if (box.content.name == 'a princess!') {
+                    $(X).find('input.grab').val('rescue');
+                }
+            }
+
+            $(X).find('span').html(c);
+
+        } else {
+            $(X).find('span').html('nothing');
+            $(X).find('input.grab').val('ok');
+        }
+
+        $(X).find('input.grab').show();
+    }
+
+    function openDoor() {
+        var door = room.door;
+        if (door.locked == false) {
+            showContent(door, '.door');
+            say("You open the door.");
+            $('.door input.leave').show();
+        } else {
+            if (player.holding.keys && player.holding.keys > 0) {
+                player.holding.keys = player.holding.keys - 1;
+                showContent(door, '.door');
+                say("You unlock the door.");
+                $('.door input.leave').show();
+            } else {
+                say("You need a key!!");
+            }
+        }
+        tick();
+        updateScreen();
+    }
+
+    function showHall() {
+        $('.hallway').show();
+        $('.room').hide();
+    }
+
+    function hideHall() {
+        $('.hallway').hide();
+        $('.room').show();
+    }
+
+    function showStaircase() {
+        $('.staircase').show();
+        $('.room').hide();
+    }
+
+    function hideStaircase() {
+        $('.staircase').hide();
+        $('.room').show();
+    }
+
+    function nextRoom() {
+        if (hallway == true) {
+            showHall();
+            hallway = false;
+            return;
+        } else {
+            hideHall();
+            //			hallway = true;
+        }
+
+        if (staircase == true) {
+            showStaircase();
+            staircase = false;
+            return;
+        } else {
+            hideStaircase();
+            //			staircase = true;
+        }
+
+        var oldFloor = room.floor;
+
+        room = makeNewRoom(room);
+
+        if (room.number == 1) {
+            rooms = [];
+        }
+
+        rooms[room.number - 1] = room;
+
+        showRoom();
+
+        say("You enter the room.");
+		if(!keyPressed && room.number % 3 == 2) say("Tip: Use the keys 1, 2 & 3 for Door, Box and Monster.");
+        tick();
+        updateScreen();
+        $('.room').animate({ backgroundColor: '#D4A017' }, 50);
+        $('.room').animate({ backgroundColor: '#FFFFFF' }, 2000);
+
+        if (oldFloor != room.floor) {
+            saveGame();
+        }
+
+    }
+
+    function maxRoom(floor) {
+        //tells you how many rooms on this floor;
+
+        //decide when we've hit the max number of room on this floor.	
+        //for the first few floors... we have less rooms.
+        //      Maybe start with 5 rooms on the first floor... 6 on the next....
+        return Math.min(floor + 5, monsterClasses.length);
+    }
+
+	function makeNewRoom(oldRoom) {
+	   var floorNum, roomNum;
+	    floorNum = oldRoom.floor;
+        roomNum = oldRoom.number + 1;
+		if (roomNum > maxRoom(oldRoom.floor)) { //monsterClasses.length + 1) {
+            roomNum = 1;
+            floorNum = floorNum + 1;
+            keyMade = false; // no brass keys have been placed on this floor yet.
+            lockMade = false;
+        }
+		return makeRoom(floorNum, roomNum);
+	}
+	
+    function makeRoom(floorNum, roomNum) { //oldRoom) {
+        var newRoom;
+        newRoom = {};
+        newRoom.floor = floorNum; //oldRoom.floor;
+        newRoom.number = roomNum; //oldRoom.number + 1;
+
+        //generate monster.
+        newRoom.monster = newMonster(newRoom);
+
+        //generate box. random with luck.
+        newRoom.box = newBox(newRoom.number);
+
+        newRoom.door = {};
+
+        //put a lock on the second last door of the floor (or sometimes, randomly, put it on an earlier door)
+		//TODO change 1.1 to 0.1
+        if (keyMade && !lockMade && (  (newRoom.number == maxRoom(newRoom.floor) - 2) || (Math.random() < 1.1) )) {
+            newRoom.door.locked = true;
+            lockMade = true;
+        } else {
+            newRoom.door.locked = false;
+        }
+		
+        newRoom.door.content = {};
+        newRoom.door.content.name = 'open door';
+        return newRoom;
+    }
+
+    function newMonster(newRoom) {
+        monster = {};
+        monster.class = monsterClasses[newRoom.number - 1];
+        //GAMEPLAY
+        monster.health = 2 * newRoom.floor + (newRoom.number - 2); // was: FIVE times, but by level 6 it was impossible 
+        monster.maxHealth = monster.health;
+        monster.firePower = 2 + Math.floor(newRoom.number / 2) + (newRoom.floor * 2);
+        monster.dead = false;
+
+        //consider: random drops. enhanced by luck.
+        if (Math.random() < 0.7) {
+            monster.content = null;
+        } else {
+            monster.content = {};
+
+            monster.content.amount = 5 * (Math.floor(Math.random() * player.luck)) + 5;
+            monster.content.name = 'gold';
+            //consider: monsters can contain other things. 
+        }
+
+        return monster;
+    }
+
+    function newBox(roomNumber) {
+        var box, r;
+        box = {};
+        r = Math.random();
+        box.locked = false;
+
+        box.content = {};
+
+        if (r < 0.8) {
+
+            if (r >= 0.64) {
+                box.content = null;
+            }
+
+            if (r < 0.64 && r >= 0.6) {
+                makeKey(box);
+            }
+
+            if (r < 0.6) {
+                box.content.name = 'bread';
+            }
+
+            if (r < 0.5) {
+                box.content.name = 'cake';
+            }
+
+            if (r < 0.4) {
+                box.content.name = 'biscuit';
+            }
+
+            if (r < 0.13) {
+                box.content.name = 'health potion';
+            }
+
+            if (r < 0.05) {
+                box.content.name = 'mana potion';
+            }
+
+            if (r < 0.001) {
+                box.content.name = 'a princess!';
+            }
+
+        } else {
+            box.content.name = 'gold';
+            box.content.amount = 5 * (Math.floor(Math.random() * player.luck)) + 5;
+            if (r > 0.98) {
+                box.content.amount = 100;
+            }
+            if (r > 0.999) {
+                box.content.amount = 300;
+            }
+        }
+
+        if (keyMade == false && roomNumber > (maxRoom(room.floor) - 3)) {
+			makeKey(box);
+        }
+
+        return box;
+    }
+
+    function makeKey(box) {
+        if (!box.content) box.content = {};
+        box.content.amount = 1;
+        box.content.name = 'brass key';
+        keyMade = true;
+    }
+
+    function hitMonster() {
+        var monster = room.monster;
+        injureMonster(monster, '.monster');
+
+        tick();
+        updateScreen();
+    }
+
+    function injureMonster(monster, monsterSelector) {
+        var firePower;
+
+        firePower = player.firePower;
+
+        if (player.mana < player.firePower) {
+            firePower = player.mana;
+        }
+
+        decrementMana();
+
+        if (monster.dead != true && firePower !== 0) {
+            //GAMEPLAY
+            monster.health = monster.health - (firePower + (player.damageForce * 2));
+            say("You hit the " + monster.class + ".");
+            if (monster.health <= 0) {
+                monsterDies(monster, monsterSelector);
+            } else {
+                //flash of blood!
+                $(monsterSelector).animate({ backgroundColor: '#EE4444' }, 10);
+                $(monsterSelector).animate({ backgroundColor: '#FFFFFF' }, 200);
+            }
+        } else {
+            //orange flash to show you're wasting mana. (you're either hitting a corpse, or out of mana)
+            $(monsterSelector).animate({ backgroundColor: '#FFEFCC' }, 10);
+            $(monsterSelector).animate({ backgroundColor: '#FFFFFF' }, 400);
+        }
+    }
+
+    function monsterDies(monster, monsterSelector) {
+        monster.dead = true;
+        say("The " + monster.class + " dies.");
+		if(!keyPressed && room.number % 3 == 0) say("Tip: Use the keys 1, 2 & 3 for Door, Box and Monster.");
+        
+        monster.health = 0;
+        $(monsterSelector).animate({ backgroundColor: '#333333' }, 50);
+        $(monsterSelector).animate({ backgroundColor: '#FFFFFF' }, 600);
+
+        //monster may drop health and mana.
+        //consider: monster drops should only happen randomly
+        player.health = player.health + Math.floor(monster.maxHealth / 2) + (player.recoverySpeed*2);
+        player.mana = player.mana + Math.floor(monster.firePower / 4) + player.reloadSpeed;
+
+        if (player.health > player.maxHealth) player.health = player.maxHealth;
+        if (player.mana > player.maxMana) player.mana = player.maxMana;
+
+        player.xp = player.xp + monster.firePower;
+
+        player.kills = player.kills + 1;
+        $('.xp').animate({ backgroundColor: ' #009900' }, 10);
+        $('.xp').animate({ backgroundColor: '#FFFFFF' }, 800);
+        showContent(monster, monsterSelector);
+    }
+
+    function pauseGame() {
+        hidden_back = '#game';
+        shown_forward = '#paused';
+        $('#game').hide();
+        $('#paused').show();
+    }
+
+    function updateScreen() {
+        var requiredXp = ((player.level + 1) * maxXp);
+        player.requiredXp = requiredXp;
+        if (player.xp >= requiredXp && player.health > 0) {
+            levelUp();
+        }
+
+        //show health, mana, xp etc.
+        $('.health').html('health<br/>' + player.health);
+        $('.mana').html('mana<br/>' + player.mana);
+        $('.gold').html('gold<br/>' + player.gold);
+        $('.xp').html('XP<br/>' + player.xp);
+        $('.level').html('level<br/>' + player.level);
+        $('#roomPlaque').html('Floor ' + room.floor + ', Room ' + room.number);
+        $('.debug1').html('<pre>player = ' + JSON.stringify(player, null, '  ') + ';</pre>');
+        $('.debug2').html('<pre>room = ' + JSON.stringify(room, null, '  ') + ';</pre>');
+
+        showMessages();
+
+    }
+
+    var stats = [];
+    function say(mess) {
+        if (messages.length > 2) {
+            messages.splice(0, (messages.length - 2));
+        }
+        messages[messages.length] = mess;
+
+        showMessages();
+
+        var info = {};
+
+        info.health = player.health;
+        info.mana = player.mana;
+        info.xp = player.xp;
+        info.kills = player.kills;
+        info.level = player.level;
+        info.gold = player.gold;
+        info.recoverySpeed = player.recoverySpeed;
+        info.reloadSpeed = player.reloadSpeed;
+        info.firePower = player.firePower;
+        info.maxHealth = player.maxHealth;
+        info.maxMana = player.maxMana;
+        info.damageForce = player.damageForce;
+        info.dead = player.dead;
+        info.healthPotions = player.holding.healthPotions;
+        info.manaPotions = player.holding.manaPotions;
+
+        stats[stats.length] = info;
+    }
+
+    function showMessages() {
+        var mess;
+        mess = '';
+        mess += messages[0] + '<br />';
+        if (messages.length > 1) mess += messages[1] + '<br />';
+        if (messages.length > 2) mess += messages[2] + '<br />';
+        $('.message').html(mess);
+    }
+
+    function pickIndex(len) {
+        return Math.floor((Math.random() * len))
+    }
+
+    //returns an item and diminishes the array, (reloading if needed)
+    function takeOne(fromArray, spareArray) {
+        if (fromArray.length == 0) {
+            fromArray = spareArray.slice(0);
+        }
+        var i = pickIndex(fromArray.length);
+        var result = fromArray[i];
+        fromArray.splice(i, 1);
+        return result;
+    }
+
+    function levelUp() {
+        player.xp = 0;
+        player.level = player.level + 1;
+
+        hidden_back = '#game';
+        shown_forward = '#levelUp';
+        $('#game').hide();
+        //pick em randomly from the possible level ups
+        //levelUpPossibilities		
+        var possibilities = jQuery.extend(true, [], levelUpPossibilities);
+        //        result.room = jQuery.extend(true, {}, room2);
+        levelUpChoices[0] = takeOne(possibilities);
+        levelUpChoices[1] = takeOne(possibilities);
+        levelUpChoices[2] = takeOne(possibilities);
+
+        $('.levelUpChoice1 span').html(levelUpChoices[0] + '<br />');
+        $('.levelUpChoice2 span').html(levelUpChoices[1] + '<br />');
+        $('.levelUpChoice3 span').html(levelUpChoices[2] + '<br />');
+        $('#levelUp').show();
+    }
+
+    function tick() {
+        //health goes up
+        //mana goes up.
+        //incrementHealth();
+        //incrementMana();
+
+        //consider: if there's a boss monster, the boss monster attacks, too.
+        var monster = room.monster;
+
+        monsterAttacks(monster, '.monster');
+    }
+
+    function monsterAttacks(monster, monsterSelector) {
+		var damageInflicted;
+        //if there's a monster, the monster attacks
+        if (monster.dead == false) {
+            //GAMEPLAY
+			damageInflicted = Math.round(monster.firePower / player.shield);
+			//say("Damage inflicted " + damageInflicted);
+            player.health = player.health - damageInflicted; //maybe monsters should do more damage than this!?
+            say("The " + monster.class + " attacks!");
+            $('.health').animate({ backgroundColor: '#EE4444' }, 10);
+            $('.health').animate({ backgroundColor: '#FFFFFF' }, 200);
+            $(monsterSelector).animate({ borderColor: '#FF0000', borderWidth: '3px' }, 20);
+            $(monsterSelector).animate({ borderColor: '#CCCCCC', borderWidth: '1px' }, 200);
+            if (player.health <= 0) {
+                player.health = 0;
+				player.deaths += 1;
+                playerDies();
+            } else if (player.health <= monster.firePower) {
+                say("You are near death.");
+            } else if (player.health <= monster.firePower * 2) {
+                say("You feel weak...");
+            }
+        }
+    }
+
+    function playerDies() {
+        var score = {};
+        score.kills = player.kills;
+        score.maximumRoom = 'Floor ' + room.floor + ', Room ' + room.number;
+		score.floor = room.floor;
+		score.number = room.number;
+        score.level = player.level;
+        score.gold = player.gold;
+		if (player.deaths == 1) {
+			scores[scores.length] = score;
+		}
+        $('#game').hide();
+        $('#dead span').html('<p>You achieved level ' + player.level + ', and ' + player.kills + ' kills.<br />You reached Floor ' + room.floor + ', Room ' + room.number + '.</p>');
+        $('#dead').show();
+    }
+
+    function incrementHealth(amount) {
+        amount = amount || player.recoverySpeed;
+        player.health = player.health + amount;
+        if (player.health > player.maxHealth) player.health = player.maxHealth;
+    }
+
+    function incrementMana(amount) {
+        amount = amount || player.reloadSpeed
+        player.mana = player.mana + amount;
+        if (player.mana > player.maxMana) player.mana = player.maxMana;
+    }
+
+    function decrementMana() {
+        //GAMEPLAY
+        player.mana = player.mana - Math.floor((player.firePower + player.damageForce) / 1.6);
+        if (player.mana < 0) player.mana = 0;
+        if (player.mana > 0) {
+            $('.mana').animate({ backgroundColor: '#C3D4E3' }, 10);
+            $('.mana').animate({ backgroundColor: '#FFFFFF' }, 200);
+        } else {
+            $('.mana').animate({ backgroundColor: '#FF00CC' }, 10);
+            $('.mana').animate({ backgroundColor: '#FFFFFF' }, 600);
+        }
+    }
+    /*
+    consider
+    
+    Note that damage is twice as useful as firepower. We want it to come up half as often.
+    find a health potion in a monster
+    find a mana potion  in a monster
+    x: find key
+    no: find monster in the box
+    
+    shop: 
+    x: buy health potions
+    X: buy mana potions
+    no: buy weapon -	sword,	knife
+    
+    
+    sometimes no box. sometimes no monster.
+    sometimes just a pile of gold
+    monsters get too strong too quickly.
+    sometimes potions in boxes -- health or mana
+    sometimes food in boxes -- cakes, biscuits, bread, apples, oranges
+    sometimes the monster has a princess (the button is then 'rescue' not grab)
+    monster strength is visible
+    when xp reaches X, then show level up choices
+    level up choice: firepower
+    level up choice: recovery (health)
+    level up choice: recovery (mana)
+    level up choice: hits costs less
+    level up choice: damage++
+    level up choice: luck++ (drops)
+    level up choice: max mana++
+    level up choice: max health++
+    level up choice: 100 gold (or 'X' gold)
+    level up choice: 
+    pause: show pause menu
+    pause menu: inventory
+    pause menu: stats
+    pause menu: quit game
+    pause menu: resume
+    pause menu: buy
+    a child instead of a monster -- if you hit it you halve everything you have.
+
+    increased firepower
+    increased damage
+    increased shield
+    increased max mana
+    increased max health
+    100 gold
+    faster mana recovery
+    faster health recovery
+    
+    { 'increased firepower', 'increasedFirepower' },
+    { 'increased damage', 'increasedDamage' },
+    { 'increased shield', 'increasedShield' },
+    { 'increased max mana', 'increasedMaxMana' },
+    { 'increased max health', 'increasedMaxHealth' },
+    { '100 gold', '100Gold' },
+    { 'faster mana recovery', 'fasterManaRecovery' },
+    { 'faster health recovery', 'fasterHealthRecovery' },
+    
+    */
+    
+    
+    
+</script>
+</html>

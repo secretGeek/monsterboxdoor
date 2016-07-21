@@ -1,0 +1,143 @@
+<html>
+
+
+
+<p>Shield starts at 1. Increases by 1 only at level ups.</p>
+<p>When a monster attacks...</p>
+<pre>player.health = player.health - Math.round(monster.firePower / player.shield);</pre>
+<p>By level 15, room 6 we have:</p>
+<p>Plaer is at level 36, with  shield = 9. Monster has firepower of 35.</p>
+<p>So the monster only takes 3 off my health.</p>
+<p>My damageforce is 9, my firePower is 10 -- so my hit power is 28.</p>
+
+<p>Monsters need to have lower health (lower max health) than the main player. But they don't need to have low firepower as well.</p>
+
+<pre>
+//monster maxHealth is 34 by this point, while my maxHealth is 98.
+// was: the 2 was FIVE times, but by level 6 it was impossible
+monster.health = 2 * newRoom.floor + (newRoom.number - 2); 
+monster.firePower = 2 + Math.floor(newRoom.number / 2) + (newRoom.floor * 2);
+
+//Upon injuring a monster we have: 
+monster.health = monster.health - (firePower + (player.damageForce * 2));
+</pre>
+<p>The game is too easy and too unbalanced at the moment in a couple of ways.</p>
+<p>Gold is too plentiful. (Or to put it another way, potions are too cheap).</p>
+<p>The 'shield' power up is too powerful.</p>
+
+
+<style>
+table,tr,td {border:1px solid #333;background-color:#CCC}
+td {border:0px solid #333;min-width:25px}
+.monster {border: 1px solid #333;border-right:0px;color:#080;font-weight:bold;}
+td.box {border: 1px solid #333;border-right:0px;border-left:0px}
+.door {border-right: 1px solid #333}
+.void1 {border: 1px solid #333;border-right:0px;border-left:0px;min-height:25px;background-color:#333;}
+.void2 {border: 1px solid #333;border-left:0px;background-color:#333;}
+.void3 {border-left: 1px solid #333;border-right: 1px solid #333;border-top:3px solid #6B2600;}
+span.box {border:1px solid #B06315;max-height:13px;min-width:13px;background-color:#B06315;margin:5px;margin-top:15px;display:block;}
+</style>
+<table>
+<tr>
+<td class='monster'>:-(</td>
+<td class='box'><span class='box'>&nbsp;</span></td>
+<td class='door'></td>
+</tr>
+<tr>
+<td class='void1'>&nbsp;</td>
+<td class='void2'></td>
+<td class='void3'></td>
+</tr>
+<tr>
+<td class='monster'>:-(</td>
+<td class='box'>[]</td>
+<td class='door'></td>
+</tr>
+<tr>
+<td class='void1'>&nbsp;</td>
+<td class='void2'></td>
+<td class='void3'></td>
+</tr>
+<tr>
+<td class='monster'>:-(</td>
+<td class='box'>[]</td>
+<td class='door'></td>
+</tr>
+<tr>
+<td class='void1'>&nbsp;</td>
+<td class='void2'></td>
+<td class='void3'></td>
+</tr>
+<tr>
+<td class='monster'>:-(</td>
+<td class='box'>[]</td>
+<td class='door'></td>
+</tr>
+<tr>
+<td class='void1'>&nbsp;</td>
+<td class='void2'></td>
+<td class='void3'></td>
+</tr>
+<tr>
+<td class='monster'>:-(</td>
+<td class='box'>[]</td>
+<td class='door'></td>
+</tr>
+<tr>
+<td class='void1'>&nbsp;</td>
+<td class='void2'></td>
+<td class='void3'></td>
+</tr>
+<tr>
+<td class='monster'>:-(</td>
+<td class='box'>[]</td>
+<td class='door'></td>
+</tr>
+<tr>
+<td class='void1'>&nbsp;</td>
+<td class='void2'></td>
+<td class='void3'></td>
+</tr>
+<tr>
+<td class='monster'>:-(</td>
+<td class='box'>[]</td>
+<td class='door'></td>
+</tr>
+<tr>
+<td class='void1'>&nbsp;</td>
+<td class='void2'></td>
+<td class='void3'></td>
+</tr>
+<tr>
+<td class='monster'>:-(</td>
+<td class='box'>[]</td>
+<td class='door'></td>
+</tr>
+<tr>
+<td class='void1'>&nbsp;</td>
+<td class='void2'></td>
+<td class='void3'></td>
+</tr>
+<tr>
+<td class='monster'>:-(</td>
+<td class='box'>[]</td>
+<td class='door'></td>
+</tr>
+<tr>
+<td class='void1'>&nbsp;</td>
+<td class='void2'></td>
+<td class='void3'></td>
+</tr>
+<tr>
+<td class='monster'>:-(</td>
+<td class='box'>[]</td>
+<td class='door'></td>
+</tr>
+<tr>
+<td class='void1'>&nbsp;</td>
+<td class='void2'></td>
+<td class='void3'></td>
+</tr>
+</table>
+			
+</html>
